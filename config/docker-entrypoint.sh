@@ -23,6 +23,11 @@ if [[ -z "${PUBLIC_DIR+x}" ]]; then
 fi
 
 #### Init var FASTCGI_PASS if not defined or is empty
+if [[ -z "${HTTPS+x}" ]]; then
+  HTTPS="php"
+fi
+
+#### Init var FASTCGI_PASS if not defined or is empty
 if [[ -z "${FASTCGI_PASS+x}" ]]; then
   FASTCGI_PASS="php"
 fi

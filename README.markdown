@@ -3,6 +3,8 @@
 [![License](https://img.shields.io/github/license/austral-project/docker-nginx)](https://img.shields.io/github/license/austral-project/docker-nginx)
 [![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/nginx/1.20)](https://img.shields.io/docker/v/australproject/nginx/1.20)
 [![Docker Automated build](https://img.shields.io/docker/automated/australproject/nginx)](https://img.shields.io/docker/automated/australproject/alpine)
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/australproject/nginx)](https://img.shields.io/docker/cloud/build/australproject/nginx)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/australproject/nginx)](https://img.shields.io/docker/image-size/australproject/nginx)
 
 View repository for the base image Alpine 3.15 : [Docker Hub](https://hub.docker.com/repository/docker/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
 
@@ -12,7 +14,8 @@ __Versions__
 __VARS defined :__
 * APP_ENV : prod or dev
 * APP_DEBUG : true or false
-* PUBLIC_DIR -> public directory for nginx
+* PUBLIC_DIR : public or other -> public directory for nginx
+* HTTPS : on or off -> enabled HTTPS
 
 ## Commit Messages
 
