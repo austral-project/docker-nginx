@@ -6,7 +6,7 @@
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/australproject/nginx)](https://img.shields.io/docker/cloud/build/australproject/nginx)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/australproject/nginx)](https://img.shields.io/docker/image-size/australproject/nginx)
 
-View repository for the base image Alpine 3.15 : [Docker Hub](https://hub.docker.com/repository/docker/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
+View repository for the base image Alpine 3.15 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
 
 __Versions__
 * Nginx : 1.20
