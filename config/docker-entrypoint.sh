@@ -22,9 +22,9 @@ if [[ -z "${PUBLIC_DIR+x}" ]]; then
   PUBLIC_DIR="public"
 fi
 
-#### Init var FASTCGI_PASS if not defined or is empty
+#### Init var HTTPS if not defined or is empty
 if [[ -z "${HTTPS+x}" ]]; then
-  HTTPS="php"
+  HTTPS="off"
 fi
 
 #### Init var FASTCGI_PASS if not defined or is empty
@@ -50,5 +50,5 @@ export APP_DEBUG
 export FASTCGI_PASS_KEY
 export FASTCGI_PASS_VALUE
 
-envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$APP_DEBUG,$APP_ENV,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
+envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$APP_DEBUG,$APP_ENV,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
 exec "$@"
