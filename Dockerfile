@@ -1,6 +1,7 @@
 FROM australproject/alpine:3.15
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
+RUN apk update && apk upgrade
 #  Install necessary packages for Nginx
 RUN apk add --update --no-cache nginx
 
