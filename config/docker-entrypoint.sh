@@ -8,31 +8,31 @@ fi
 chown -R www-data:www-data /home/www-data/website/var
 
 #### Init var APP_DEBUG if not defined or is empty
-if [[ -z "${APP_DEBUG+x}" ]]; then
+if [ -z "${APP_DEBUG+x}" ]; then
   APP_DEBUG="false"
 fi
 
 #### Init var APP_ENV if not defined or is empty
-if [[ -z "${APP_ENV+x}" ]]; then
+if [ -z "${APP_ENV+x}" ]; then
   APP_ENV="prod"
 fi
 
 #### Init var PUBLIC_DIR if not defined or is empty
-if [[ -z "${PUBLIC_DIR+x}" ]]; then
+if [ -z "${PUBLIC_DIR+x}" ]; then
   PUBLIC_DIR="public"
 fi
 
 #### Init var HTTPS if not defined or is empty
-if [[ -z "${HTTPS+x}" ]]; then
+if [ -z "${HTTPS+x}" ]; then
   HTTPS="off"
 fi
 
 #### Init var FASTCGI_PASS if not defined or is empty
-if [[ -z "${FASTCGI_PASS+x}" ]]; then
+if [ -z "${FASTCGI_PASS+x}" ]; then
   FASTCGI_PASS="php"
 fi
 
-if [[ "${FASTCGI_PASS}" = "test" ]]; then
+if [ "${FASTCGI_PASS}" = "test" ]; then
   FASTCGI_PASS_KEY=""
   FASTCGI_PASS_VALUE=""
 else
@@ -43,12 +43,15 @@ fi
 echo "App Debug : ${APP_DEBUG}"
 echo "App environnement : ${APP_ENV}"
 echo "Public dir : ${PUBLIC_DIR}"
+echo "HTTPS : ${HTTPS}"
 echo "Fastcgi_pass : ${FASTCGI_PASS_KEY} ${FASTCGI_PASS_VALUE}"
 
 export APP_ENV
 export APP_DEBUG
 export FASTCGI_PASS_KEY
 export FASTCGI_PASS_VALUE
+export HTTPS
+export PUBLIC_DIR
 
 envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$APP_DEBUG,$APP_ENV,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
 exec "$@"
