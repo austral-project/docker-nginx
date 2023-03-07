@@ -39,8 +39,9 @@ export FASTCGI_PASS_VALUE
 export HTTPS
 export PUBLIC_DIR
 
-if test -f /etc/nginx/sites-available/website
+if test -f /etc/nginx/sites-available/website.custom
 then
+  cp /etc/nginx/sites-available/website.custom /etc/nginx/sites-available/website
   echo "Website nginx config exist"
 else
   echo "Generate Website nginx config"
