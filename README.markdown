@@ -1,15 +1,16 @@
-# Austral Docker Nginx 1.20
+# Austral Docker Nginx 1.22
 
 [![License](https://img.shields.io/github/license/austral-project/docker-nginx)](https://img.shields.io/github/license/austral-project/docker-nginx)
-[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/nginx/1.20)](https://img.shields.io/docker/v/australproject/nginx/1.20)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/nginx/1.22)](https://img.shields.io/docker/v/australproject/nginx/1.22)
 [![Docker Automated build](https://img.shields.io/docker/automated/australproject/nginx)](https://img.shields.io/docker/automated/australproject/alpine)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/australproject/nginx)](https://img.shields.io/docker/cloud/build/australproject/nginx)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/australproject/nginx)](https://img.shields.io/docker/image-size/australproject/nginx)
 
-View repository for the base image Alpine 3.15 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
+View repository for the base image Alpine 3.17 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
 
 __Versions__
-* Nginx : 1.20
+* Alpine : 3.17
+* Nginx : 1.22
 
 __VARS defined :__
 * APP_ENV : prod or dev
