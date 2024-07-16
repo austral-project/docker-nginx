@@ -1,4 +1,4 @@
-FROM australproject/alpine:3.17
+FROM australproject/alpine:3.20
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
 RUN apk update && apk upgrade

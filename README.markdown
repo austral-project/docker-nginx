@@ -1,4 +1,4 @@
-# Austral Docker Nginx 1.22
+# Austral Docker Nginx 1.26
 
 [![License](https://img.shields.io/github/license/austral-project/docker-nginx)](https://img.shields.io/github/license/austral-project/docker-nginx)
 [![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/nginx/1.22)](https://img.shields.io/docker/v/australproject/nginx/1.22)
@@ -9,8 +9,8 @@
 View repository for the base image Alpine 3.17 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
 
 __Versions__
-* Alpine : 3.17
-* Nginx : 1.22
+* Alpine : 3.20
+* Nginx : 1.26
 
 __VARS defined :__
 * APP_ENV : prod or dev

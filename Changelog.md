@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### Version Nginx 1.26 (2023-07-16)
+* Update Alpine Version to 3.20
+* Update Nginx Version to 1.26
+
 ### Version Nginx 1.22 (2023-03-07)
 * Update Alpine Version to 3.17
 * Update Nginx Version to 1.22
