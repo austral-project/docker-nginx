@@ -1,7 +1,7 @@
 # Austral Docker Nginx 1.26
 
 [![License](https://img.shields.io/github/license/austral-project/docker-nginx)](https://img.shields.io/github/license/austral-project/docker-nginx)
-[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/nginx/1.22)](https://img.shields.io/docker/v/australproject/nginx/1.22)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/nginx/1.26)](https://img.shields.io/docker/v/australproject/nginx/1.26)
 [![Docker Automated build](https://img.shields.io/docker/automated/australproject/nginx)](https://img.shields.io/docker/automated/australproject/alpine)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/australproject/nginx)](https://img.shields.io/docker/cloud/build/australproject/nginx)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/australproject/nginx)](https://img.shields.io/docker/image-size/australproject/nginx)
