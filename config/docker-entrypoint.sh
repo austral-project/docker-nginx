@@ -26,8 +26,12 @@ if [ "${FASTCGI_PASS}" = "test" ]; then
   FASTCGI_PASS_KEY=""
   FASTCGI_PASS_VALUE=""
 else
-  FASTCGI_PASS_KEY="fastcgi_pass"
-  FASTCGI_PASS_VALUE="php:9900;"
+    if [[ -z "${FASTCGI_PASS_KEY+x}" ]]; then
+      FASTCGI_PASS="fastcgi_pass"
+    fi
+    if [[ -z "${FASTCGI_PASS_VALUE+x}" ]]; then
+      FASTCGI_PASS_VALUE="php:9900"
+    fi
 fi
 
 echo "Public dir : ${PUBLIC_DIR}"
