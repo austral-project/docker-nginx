@@ -55,10 +55,12 @@ then
   echo "Website nginx config exist"
 else
   if [ "$ALONE" = "true" ]; then
-  cp /etc/nginx/sites-available/website.alone /etc/nginx/sites-available/website
+    echo "Generate Website nginx config"
+    envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.alone > /etc/nginx/sites-available/website
+  else
+    echo "Generate Website nginx config"
+    envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
   fi
-  echo "Generate Website nginx config"
-  envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
 fi
 
 exec "$@"
