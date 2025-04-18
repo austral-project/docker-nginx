@@ -29,6 +29,8 @@ if [ "${FASTCGI_PASS}" = "test" ]; then
 
 elif [ "${FASTCGI_PASS}" = "alone" ]; then
   ALONE=true
+  FASTCGI_PASS_KEY="Alone"
+  FASTCGI_PASS_VALUE="nginx"
 else
     if [[ -z "${FASTCGI_PASS_KEY+x}" ]]; then
       FASTCGI_PASS_KEY="fastcgi_pass"
