@@ -27,7 +27,7 @@ if [ "${FASTCGI_PASS}" = "test" ]; then
   FASTCGI_PASS_VALUE=""
 else
     if [[ -z "${FASTCGI_PASS_KEY+x}" ]]; then
-      FASTCGI_PASS="fastcgi_pass"
+      FASTCGI_PASS_KEY="fastcgi_pass"
     fi
     if [[ -z "${FASTCGI_PASS_VALUE+x}" ]]; then
       FASTCGI_PASS_VALUE="php:9900"
