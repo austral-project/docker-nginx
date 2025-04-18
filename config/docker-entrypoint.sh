@@ -22,9 +22,13 @@ if [ -z "${FASTCGI_PASS+x}" ]; then
   FASTCGI_PASS="php"
 fi
 
+ALONE=false
 if [ "${FASTCGI_PASS}" = "test" ]; then
   FASTCGI_PASS_KEY=""
   FASTCGI_PASS_VALUE=""
+
+elif [ "${FASTCGI_PASS}" = "alone" ]; then
+  ALONE=true
 else
     if [[ -z "${FASTCGI_PASS_KEY+x}" ]]; then
       FASTCGI_PASS_KEY="fastcgi_pass"
@@ -48,6 +52,9 @@ then
   cp /etc/nginx/sites-available/website.custom /etc/nginx/sites-available/website
   echo "Website nginx config exist"
 else
+  if [ "$ALONE" = "true" ]; then
+  cp /etc/nginx/sites-available/website.alone /etc/nginx/sites-available/website
+  fi
   echo "Generate Website nginx config"
   envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
 fi
