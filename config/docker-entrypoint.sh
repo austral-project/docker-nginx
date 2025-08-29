@@ -21,12 +21,22 @@ if [ -z "${FASTCGI_PASS+x}" ]; then
   FASTCGI_PASS="php"
 fi
 
+ALONE=false
 if [ "${FASTCGI_PASS}" = "test" ]; then
   FASTCGI_PASS_KEY=""
   FASTCGI_PASS_VALUE=""
+
+elif [ "${FASTCGI_PASS}" = "alone" ]; then
+  ALONE=true
+  FASTCGI_PASS_KEY="Alone"
+  FASTCGI_PASS_VALUE="nginx"
 else
-  FASTCGI_PASS_KEY="fastcgi_pass"
-  FASTCGI_PASS_VALUE="php:9900;"
+    if [[ -z "${FASTCGI_PASS_KEY+x}" ]]; then
+      FASTCGI_PASS_KEY="fastcgi_pass"
+    fi
+    if [[ -z "${FASTCGI_PASS_VALUE+x}" ]]; then
+      FASTCGI_PASS_VALUE="php:9900"
+    fi
 fi
 
 echo "Public dir : ${PUBLIC_DIR}"
@@ -43,8 +53,13 @@ then
   cp /etc/nginx/sites-available/website.custom /etc/nginx/sites-available/website
   echo "Website nginx config exist"
 else
-  echo "Generate Website nginx config"
-  envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
+  if [ "$ALONE" = "true" ]; then
+    echo "Generate Website nginx config"
+    envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.alone > /etc/nginx/sites-available/website
+  else
+    echo "Generate Website nginx config"
+    envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
+  fi
 fi
 
 exec "$@"

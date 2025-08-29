@@ -12,6 +12,7 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 RUN mkdir /etc/nginx/sites-enabled
 
 COPY config/website.conf /etc/nginx/sites-available/website.template
+COPY config/website.alone /etc/nginx/sites-available/website.alone
 COPY config/website.conf /etc/nginx/sites-available/website
 
 RUN ln -s /etc/nginx/sites-available/website /etc/nginx/sites-enabled/default
