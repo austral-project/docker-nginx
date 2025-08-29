@@ -1,11 +1,10 @@
 #!/usr/bin/env sh
 set -eu
 
-if [ ! -d "/home/www-data/website/var/docker-log/nginx" ]
+if [ ! -d "/home/www-data/website/docker-log/nginx" ]
 then
-  mkdir -p /home/www-data/website/var/docker-log/nginx
+  mkdir -p /home/www-data/website/docker-log/nginx
 fi
-chown -R www-data:www-data /home/www-data/website/var
 
 #### Init var PUBLIC_DIR if not defined or is empty
 if [ -z "${PUBLIC_DIR+x}" ]; then
