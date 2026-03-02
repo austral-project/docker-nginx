@@ -7,8 +7,7 @@ set -eu
 PUBLIC_DIR=${PUBLIC_DIR:-public}
 HTTPS=${HTTPS:-on}
 FASTCGI_PASS=${FASTCGI_PASS:-php}
-
-ALONE=false
+ALONE=${ALONE:-false}
 
 # ---------------------------
 # Determine FastCGI backend configuration

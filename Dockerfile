@@ -6,7 +6,10 @@ LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 RUN apk update && apk upgrade \
         && apk add --no-cache nginx \
         && mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled \
-        && rm -rf /var/cache/apk/*
+        && rm -rf /var/cache/apk/* \
+        && mkdir -p /var/lib/nginx/tmp \
+        && chown -R www-data:www-data /var/lib/nginx \
+        && chmod -R 755 /var/lib/nginx
 
 # Init Nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
