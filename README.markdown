@@ -9,8 +9,8 @@
 View repository for the base image Alpine 3.20 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
 
 __Versions__
-* Alpine : 3.20
-* Nginx : 1.26
+* Alpine : 3.23
+* Nginx : 1.28
 
 __VARS defined :__
 * APP_ENV : prod or dev
