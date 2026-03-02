@@ -1,33 +1,33 @@
-FROM australproject/alpine:3.20
+# Dockerfile.nginx
+FROM australproject/alpine:3.23
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
-RUN apk update && apk upgrade
-#  Install necessary packages for Nginx
-RUN apk add --update --no-cache nginx
+USER root
 
-RUN rm -rf /var/cache/apk/*
+#  Init Docker
+RUN apk update && apk upgrade \
+        && apk add --no-cache nginx \
+        && mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled \
+        && rm -rf /var/cache/apk/*
 
 # Init Nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
-RUN mkdir /etc/nginx/sites-enabled
 
+# Virtual hosts
 COPY config/website.conf /etc/nginx/sites-available/website.template
 COPY config/website.alone /etc/nginx/sites-available/website.alone
 COPY config/website.conf /etc/nginx/sites-available/website
-
 RUN ln -s /etc/nginx/sites-available/website /etc/nginx/sites-enabled/default
-RUN mkdir -p /var/lib/nginx/tmp /var/log/nginx \
-    && chown -R www-data:www-data /var/lib/nginx /var/log/nginx \
-    && chmod -R 755 /var/lib/nginx /var/log/nginx
 
 COPY config/docker-entrypoint.sh /
 RUN chmod -R 755 /docker-entrypoint.sh
 
+WORKDIR /home/www-data/website
+
 #  Init Workdir, Entrypoint, CMD
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+USER www-data
 EXPOSE 80
 STOPSIGNAL SIGQUIT
-
-WORKDIR /home/www-data/website
 CMD ["nginx", "-g", "daemon off;"]

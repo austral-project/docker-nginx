@@ -1,65 +1,56 @@
 #!/usr/bin/env sh
 set -eu
 
-if [ ! -d "/home/www-data/website/docker-log/nginx" ]
-then
-  mkdir -p /home/www-data/website/docker-log/nginx
-fi
-
-#### Init var PUBLIC_DIR if not defined or is empty
-if [ -z "${PUBLIC_DIR+x}" ]; then
-  PUBLIC_DIR="public"
-fi
-
-#### Init var HTTPS if not defined or is empty
-if [ -z "${HTTPS+x}" ]; then
-  HTTPS="on"
-fi
-
-#### Init var FASTCGI_PASS if not defined or is empty
-if [ -z "${FASTCGI_PASS+x}" ]; then
-  FASTCGI_PASS="php"
-fi
+# ---------------------------
+# Initialize variables with default values
+# ---------------------------
+PUBLIC_DIR=${PUBLIC_DIR:-public}
+HTTPS=${HTTPS:-on}
+FASTCGI_PASS=${FASTCGI_PASS:-php}
 
 ALONE=false
-if [ "${FASTCGI_PASS}" = "test" ]; then
-  FASTCGI_PASS_KEY=""
-  FASTCGI_PASS_VALUE=""
 
-elif [ "${FASTCGI_PASS}" = "alone" ]; then
-  ALONE=true
-  FASTCGI_PASS_KEY="Alone"
-  FASTCGI_PASS_VALUE="nginx"
+# ---------------------------
+# Determine FastCGI backend configuration
+# ---------------------------
+case "$FASTCGI_PASS" in
+  test)
+    FASTCGI_PASS_KEY=""
+    FASTCGI_PASS_VALUE=""
+    ;;
+  alone)
+    ALONE=true
+    FASTCGI_PASS_KEY="Alone"
+    FASTCGI_PASS_VALUE="nginx"
+    ;;
+  *)
+    FASTCGI_PASS_KEY=${FASTCGI_PASS_KEY:-fastcgi_pass}
+    FASTCGI_PASS_VALUE=${FASTCGI_PASS_VALUE:-php:9900}
+    ;;
+esac
+
+echo "Public dir : $PUBLIC_DIR"
+echo "HTTPS : $HTTPS"
+echo "Fastcgi_pass : $FASTCGI_PASS_KEY $FASTCGI_PASS_VALUE"
+
+# Export variables for envsubst in templates
+export PUBLIC_DIR HTTPS FASTCGI_PASS_KEY FASTCGI_PASS_VALUE
+
+# ---------------------------
+# Generate Nginx configuration
+# ---------------------------
+TARGET_CONF="/etc/nginx/sites-available/website"
+
+if [ -f /etc/nginx/sites-available/website.custom ]; then
+    cp /etc/nginx/sites-available/website.custom "$TARGET_CONF"
+    echo "Website custom nginx config applied"
 else
-    if [[ -z "${FASTCGI_PASS_KEY+x}" ]]; then
-      FASTCGI_PASS_KEY="fastcgi_pass"
-    fi
-    if [[ -z "${FASTCGI_PASS_VALUE+x}" ]]; then
-      FASTCGI_PASS_VALUE="php:9900"
-    fi
+    TEMPLATE_FILE=$([ "$ALONE" = true ] && echo "/etc/nginx/sites-available/website.alone" || echo "/etc/nginx/sites-available/website.template")
+    echo "Generating website nginx config from $TEMPLATE_FILE"
+    envsubst '$PUBLIC_DIR,$HTTPS,$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE' < "$TEMPLATE_FILE" > "$TARGET_CONF"
 fi
 
-echo "Public dir : ${PUBLIC_DIR}"
-echo "HTTPS : ${HTTPS}"
-echo "Fastcgi_pass : ${FASTCGI_PASS_KEY} ${FASTCGI_PASS_VALUE}"
-
-export FASTCGI_PASS_KEY
-export FASTCGI_PASS_VALUE
-export HTTPS
-export PUBLIC_DIR
-
-if test -f /etc/nginx/sites-available/website.custom
-then
-  cp /etc/nginx/sites-available/website.custom /etc/nginx/sites-available/website
-  echo "Website nginx config exist"
-else
-  if [ "$ALONE" = "true" ]; then
-    echo "Generate Website nginx config"
-    envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.alone > /etc/nginx/sites-available/website
-  else
-    echo "Generate Website nginx config"
-    envsubst '$FASTCGI_PASS_KEY,$FASTCGI_PASS_VALUE,$HTTPS,$PUBLIC_DIR' < /etc/nginx/sites-available/website.template > /etc/nginx/sites-available/website
-  fi
-fi
-
+# ---------------------------
+# Execute final command
+# ---------------------------
 exec "$@"

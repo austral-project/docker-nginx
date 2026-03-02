@@ -1,8 +1,6 @@
 server {
   listen 80;
   server_name ~.*;
-  access_log /home/www-data/website/var/docker-log/nginx/website.access.log;
-  error_log /home/www-data/website/var/docker-log/nginx/website.error.log;
   server_name_in_redirect off;
 
   client_max_body_size 10G;
@@ -14,27 +12,34 @@ server {
   root /home/www-data/website/$PUBLIC_DIR;
   index index.html;
 
-  location ~* \.(html)$ {
-      add_header 'Access-Control-Allow-Origin' '*' always;
-      add_header 'Access-Control-Expose-Headers' 'Content-Type, Content-Range, Content-Disposition, Content-Description, Content-Length';
-      add_header 'Access-Control-Allow-Credentials' 'true' always;
-      add_header 'Austral' 'Direct-Link';
-      expires 1y;
-      add_header Cache-Control "public, max-age=31536000";
+  add_header X-Frame-Options DENY;
+  add_header X-Content-Type-Options nosniff;
+  add_header X-XSS-Protection "1; mode=block";
+
+  location   location ~ ^/(build|bundles|static)/.*\.(webp|jpg|svg|jpeg|gif|css|png|js|ico|txt|srt|swf|mp4|webm|ttf|eot|woff|woff2)$ {
+    root /home/www-data/website/$PUBLIC_DIR;
+    add_header 'Access-Control-Allow-Origin' '*' always;
+    add_header 'Access-Control-Expose-Headers' "Content-Type, Content-Range, Content-Disposition, Content-Description, Content-Length";
+    add_header 'Access-Control-Allow-Credentials' 'true' always;
+    add_header 'Austral' "Direct-Link";
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
   }
+
+  location ~* \.(html)$ {
+    add_header 'Access-Control-Allow-Origin' '*' always;
+    add_header 'Access-Control-Expose-Headers' "Content-Type, Content-Range, Content-Disposition, Content-Description, Content-Length";
+    add_header 'Access-Control-Allow-Credentials' 'true' always;
+    add_header 'Austral' "Direct-Link";
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+  }
+
   location / {
       try_files $uri $uri/ /index.html?$query_string;
   }
 
-  location ~ /\.ht {
-    deny all;
-  }
-  # On distribue les fichiers statiques directement
-  location ~ ^/(build|bundles|static)/.*.(jpg|svg|jpeg|gif|css|png|js|ico|txt|srt|swf|mp4|webm|ttf|eot|woff|woff2)$ {
-    root /home/www-data/website/$PUBLIC_DIR;
-    access_log /home/www-data/website/var/docker-log/nginx/website.static.access.log;
-    error_log /home/www-data/website/var/docker-log/nginx/website.static.error.log;
-    expires       31536000;
-    add_header    Cache-Control "public, max-age= 31536000";
-  }
+  location ~ /\.ht { deny all; }
+  location ~ /\.git { deny all; }
+  location ~ /config/ { deny all; }
 }
