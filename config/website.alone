@@ -41,5 +41,4 @@ server {
 
   location ~ /\.ht { deny all; }
   location ~ /\.git { deny all; }
-  location ~ /config/ { deny all; }
 }
