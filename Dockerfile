@@ -2,8 +2,6 @@
 FROM australproject/alpine:3.23
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
-USER root
-
 #  Init Docker
 RUN apk update && apk upgrade \
         && apk add --no-cache nginx \
@@ -27,7 +25,6 @@ WORKDIR /home/www-data/website
 #  Init Workdir, Entrypoint, CMD
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-USER www-data
 EXPOSE 80
 STOPSIGNAL SIGQUIT
 CMD ["nginx", "-g", "daemon off;"]
