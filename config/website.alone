@@ -1,40 +1,46 @@
+# Rendered by docker-entrypoint.sh (envsubst) -> ${NGINX_RUN_DIR}/sites/website.conf  (MODE=static)
 server {
-  listen 80;
-  server_name ~.*;
-  access_log /home/www-data/website/var/docker-log/nginx/website.access.log;
-  error_log /home/www-data/website/var/docker-log/nginx/website.error.log;
+  listen ${LISTEN_PORT};
+  server_name _;
   server_name_in_redirect off;
 
-  client_max_body_size 10G;
-  fastcgi_buffers 64 4K;
-  fastcgi_buffer_size 32k;
-  fastcgi_send_timeout 1200;
-  fastcgi_read_timeout 1200;
-
-  root /home/www-data/website/$PUBLIC_DIR;
+  root ${WEBSITE_ROOT}/${PUBLIC_DIR};
   index index.html;
 
-  location ~* \.(html)$ {
-      add_header 'Access-Control-Allow-Origin' '*' always;
-      add_header 'Access-Control-Expose-Headers' 'Content-Type, Content-Range, Content-Disposition, Content-Description, Content-Length';
-      add_header 'Access-Control-Allow-Credentials' 'true' always;
-      add_header 'Austral' 'Direct-Link';
-      expires 1y;
-      add_header Cache-Control "public, max-age=31536000";
-  }
-  location / {
-      try_files $uri $uri/ /index.html?$query_string;
+  include ${NGINX_RUN_DIR}/snippets/security-headers.conf;
+  include ${NGINX_RUN_DIR}/snippets/error-pages.conf;
+
+  # Extra directives / locations of the project: /overrides/server.d/*.conf
+  include ${OVERRIDES_DIR}/server.d/*.conf;
+
+  location = /healthz {
+    access_log off;
+    default_type text/plain;
+    return 200 "ok\n";
   }
 
-  location ~ /\.ht {
-    deny all;
+  # Hidden files (.git, .env, .htaccess...), except /.well-known/
+  location ~ /\.(?!well-known(?:/|$)) {
+    access_log off;
+    log_not_found off;
+    return 404;
   }
-  # On distribue les fichiers statiques directement
-  location ~ ^/(build|bundles|static)/.*.(jpg|svg|jpeg|gif|css|png|js|ico|txt|srt|swf|mp4|webm|ttf|eot|woff|woff2)$ {
-    root /home/www-data/website/$PUBLIC_DIR;
-    access_log /home/www-data/website/var/docker-log/nginx/website.static.access.log;
-    error_log /home/www-data/website/var/docker-log/nginx/website.static.error.log;
-    expires       31536000;
-    add_header    Cache-Control "public, max-age= 31536000";
+
+  # Static files
+  location ~* \.(?:css|js|mjs|map|webp|avif|jpe?g|png|gif|svg|ico|woff2?|ttf|otf|eot|txt|srt|swf|mp4|webm|mp3|pdf|json|xml)$ {
+    try_files $uri =404;
+    include ${NGINX_RUN_DIR}/snippets/static-headers.conf;
+  }
+
+  # HTML (also the SPA fallback /index.html): always revalidated, so a new deployment is seen at once
+  location ~* \.html?$ {
+    try_files $uri =404;
+    include ${NGINX_RUN_DIR}/snippets/security-headers.conf;
+    add_header Cache-Control "no-cache" always;
+  }
+
+  # SPA: unknown routes return index.html
+  location / {
+    try_files $uri $uri/ /index.html;
   }
 }
