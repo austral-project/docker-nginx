@@ -11,6 +11,7 @@ RUN apk update && apk upgrade \
 COPY config/nginx.conf config/website.conf config/website.alone /usr/local/share/nginx-templates/
 COPY config/snippets/ /usr/local/share/nginx-templates/snippets/
 COPY config/errors/ /usr/local/share/nginx-templates/errors/
+RUN chmod -R a+rX /usr/local/share/nginx-templates
 
 COPY config/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod 0755 /docker-entrypoint.sh
