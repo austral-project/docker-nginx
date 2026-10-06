@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="${ERROR_LANG}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>${ERROR_CODE} - ${ERROR_TITLE}</title>
+  <style>
+    :root { --bg: #f6f7f9; --fg: #1d2330; --muted: #6b7280; --accent: #3b5bdb; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #14171f; --fg: #e8eaf0; --muted: #9aa3b2; --accent: #8da2fb; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+           background: var(--bg); color: var(--fg);
+           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 480px; text-align: center; }
+    .code { font-size: clamp(64px, 18vw, 120px); font-weight: 700; line-height: 1; color: var(--accent); }
+    h1 { margin: 16px 0 8px; font-size: 24px; }
+    p { margin: 0 0 24px; color: var(--muted); line-height: 1.5; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="code">${ERROR_CODE}</div>
+    <h1>${ERROR_TITLE}</h1>
+    <p>${ERROR_MESSAGE}</p>
+    <a href="/">${ERROR_HOME_LABEL}</a>
+  </main>
+</body>
+</html>
